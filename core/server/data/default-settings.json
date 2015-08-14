@@ -1,0 +1,16 @@
+{
+  "core": {
+    "databaseVersion": {
+      "defaultValue": "000"
+    },
+    "dbHash": {
+      "defaultValue": null
+    },
+    "nextUpdateCheck": {
+      "defaultValue": null
+    },
+    "displayUpdateNotification": {
+      "defaultValue": null
+    }
+  }
+}
