@@ -44,7 +44,23 @@ function doFirstRun() {
 }
 
 function initDbHashAndFirstRun() {
-  
+  return api.settings.read({key: 'dbHash', context: {internal: true}}).then(function (response) {
+    var hash = response.settings[0].value,
+        initHash;
+        
+    dbHash = hash;
+    
+    if (dbHash === null) {
+      initHash = uuid.v4();
+      return api.settings.edit({settings: [{key: 'dbHash', value: initHash}]}, {context: {internal: true}})
+        .then(function (response) {
+          dbHash = response.settings[0].value;
+          return dbHash;
+        }).then(doFirstRun);
+    }
+    
+    return dbHash;
+  });
 }
 
 // ## Intialize App
@@ -78,6 +94,13 @@ function init(options) {
     // Initialize the permissions actions and objects
     // NOTE: Must be done before initDbHashAndFirstRun calls
     return permissions.init();
+  }).then(function () {
+    return Promise.join(
+      // Check for or initialise a dbHash.
+      initDbHashAndFirstRun(),
+      // Initialize mail
+      mailer.init()
+    );
   }).then(function () {
     
     // enabled gzip compression by default
