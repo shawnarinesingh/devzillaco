@@ -7,7 +7,7 @@ var _               = require('lodash'),
     commands        = require('./commands'),
     versioning      = require('../versioning'),
     models          = require('../../models'),
-    // fixtures        = require('../fixtures'),
+    fixtures        = require('../fixtures'),
     schema          = require('../schema').tables,
     dataExport      = require('../export'),
     utils           = require('../utils'),
@@ -116,7 +116,9 @@ migrateUpFreshDb = function (tablesOnly) {
     return tableSequence;
   }
   return tableSequence.then(function () {
-
+    // Load the fixtures
+    return fixtures.populate();
+  }).then(function () {
     return populateDefaultSettings();
   });
 };
@@ -161,6 +163,8 @@ migrateUp = function (fromVersion, toVersion) {
 
       return sequence(migrateOps);
     }
+  }).then(function () {
+    return fixtures.update(fromVersion, toVersion);
   }).then(function () {
     return populateDefaultSettings();
   });

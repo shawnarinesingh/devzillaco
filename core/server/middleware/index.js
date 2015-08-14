@@ -9,7 +9,6 @@ var api            = require('../api'),
     errors         = require('../errors'),
     express        = require('express'),
     fs             = require('fs'),
-    hbs            = require('express-hbs'),
     logger         = require('morgan'),
     middleware     = require('./middleware'),
     path           = require('path'),
@@ -28,3 +27,16 @@ var api            = require('../api'),
 
     blogApp,
     setupMiddleware;
+
+
+setupMiddleware = function setupMiddleware(clientApp, apiApp) {
+  var logging = config.logging,
+      corePath = config.paths.corePath,
+      oauthServer = oauth2orize.createServer();
+  
+  // silence JSHint without disabling unused check for the whole file
+  authStrategies = authStrategies;
+  
+  // Cache express server instance
+  
+};

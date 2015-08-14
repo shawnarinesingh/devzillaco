@@ -1,0 +1,104 @@
+{
+  "permissions": {
+    "db": [
+      {
+        "name": "Export database",
+        "action_type": "exportContent"
+      },
+      {
+        "name": "Import database",
+        "action_type": "importContent"
+      },
+      {
+        "name": "Delete all content",
+        "action_type": "deleteAllContent"
+      }
+    ],
+    "mail": [
+      {
+        "name": "Send mail",
+        "action_type": "send"
+      }
+    ],
+    "notification": [
+      {
+        "name": "Browse notifications",
+        "action_type": "browse"
+      },
+      {
+        "name": "Add notifications",
+        "action_type": "add"
+      },
+      {
+        "name": "Delete notifications",
+        "action_type": "destroy"
+      }
+    ],
+    "setting": [
+      {
+        "name": "Browse settings",
+        "action_type": "browse"
+      },
+      {
+        "name": "Read settings",
+        "action_type": "read"
+      },
+      {
+        "name": "Edit settings",
+        "action_type": "edit"
+      }
+    ],
+    "user": [
+      {
+        "name": "Browse users",
+        "action_type": "browse"
+      },
+      {
+        "name": "Read users",
+        "action_type": "read"
+      },
+      {
+        "name": "Edit users",
+        "action_type": "edit"
+      },
+      {
+        "name": "Add users",
+        "action_type": "add"
+      },
+      {
+        "name": "Delete users",
+        "action_type": "destroy"
+      }
+    ],
+    "role": [
+      {
+        "name": "Assign a role",
+        "action_type": "assign"
+      },
+      {
+        "name": "Browse roles",
+        "action_type": "browse"
+      }
+    ]
+  },
+  "permissions_roles": {
+    "Administrator": {
+      "db": "all",
+      "mail": "all",
+      "notification": "all",
+      "setting": "all",
+      "user": "all",
+      "role": "all"
+    },
+    "Staff": {
+      "setting": ["browse", "read"],
+      "user": "all",
+      "role": "all"
+    },
+    "Subscriber": {
+      "setting": ["browse", "read"],
+      "user": ["browse", "read"],
+      "role": ["browse"]
+    }
+  }
+}

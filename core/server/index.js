@@ -15,7 +15,7 @@ var express     = require('express'),
     errors      = require('./errors'),
     helpers     = require('./helpers'),
     mailer      = require('./mail'),
-    middleware  = require('./middleware'),
+    // middleware  = require('./middleware'),
     migrations  = require('./data/migration'),
     models      = require('./models'),
     permissions = require('./permissions'),
@@ -37,7 +37,7 @@ function doFirstRun() {
     '<strong>' + config.url + '</strong>.'
   ];
   
-  return api.notifications.add({notifactions: [{
+  return api.notifications.add({notifications: [{
     type: 'info',
     message: firstRunMessage.join(' ')
   }]}, {context: {internal: true}});

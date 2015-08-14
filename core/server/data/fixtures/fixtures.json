@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "name": "Owner",
+      "email": "devzilla@devzilla.co",
+      "status": "inactive"
+    }
+  ],
+  
+  "roles": [
+    {
+      "name": "Owner",
+      "description": "Owner"
+    },
+    {
+      "name": "Administrator",
+      "description": "Administrators"
+    },
+    {
+      "name": "Staff",
+      "description": "Staff"
+    },
+    {
+      "name": "Subscriber",
+      "description": "Subscribers"
+    }
+  ]
+}
