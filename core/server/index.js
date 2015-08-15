@@ -108,6 +108,9 @@ function init(options) {
       app.use(compress());
     }
     
+    // Handles express server and routing
+    // middleware(app);
+    
     return new appServer(app);
   });
 }

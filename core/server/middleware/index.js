@@ -12,31 +12,29 @@ var api            = require('../api'),
     logger         = require('morgan'),
     middleware     = require('./middleware'),
     path           = require('path'),
-    routes         = require('../routes'),
+    // routes         = require('../routes'),
     slashes        = require('connect-slashes'),
-    storage        = require('../storage'),
+    // storage        = require('../storage'),
     _              = require('lodash'),
     passport       = require('passport'),
-    oauth          = require('./oauth'),
+    // oauth          = require('./oauth'),
     oauth2orize    = require('oauth2orize'),
-    authStrategies = require('./auth-strategies'),
+    // authStrategies = require('./auth-strategies'),
     utils          = require('../utils'),
-    sitemapHandler = require('../data/xml/sitemap/handler'),
-    decideIsAdmin  = require('./decide-is-admin'),
+    // sitemapHandler = require('../data/xml/sitemap/handler'),
+    // decideIsAdmin  = require('./decide-is-admin'),
     uncapitalise   = require('./uncapitalise'),
 
     clientApp,
     setupMiddleware;
 
 
-setupMiddleware = function setupMiddleware(clientApp, apiApp) {
+setupMiddleware = function setupMiddleware(clientAppInstance, apiApp) {
   var logging = config.logging,
       corePath = config.paths.corePath,
       oauthServer = oauth2orize.createServer();
   
-  // silence JSHint without disabling unused check for the whole file
-  authStrategies = authStrategies;
-  
   // Cache express server instance
-  
+  clientApp = clientAppInstance;
+  middleware.cacheApp
 };
