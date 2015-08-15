@@ -36,5 +36,18 @@ setupMiddleware = function setupMiddleware(clientAppInstance, apiApp) {
   
   // Cache express server instance
   clientApp = clientAppInstance;
-  middleware.cacheApp
+  middleware.cacheApp(clientAppInstance);
+  
+  // Make sure 'req.secure' is valid for proxied requests
+  // (X-Forwarded-Proto header will be checked, if present)
+  clientApp.enable('trust proxy');
+  
+  // Logging configuration
+  if (logging !== false) {
+    if (clientApp.get('env') !== 'development') {
+      clientApp.use(logger('combined', logging));
+    } else {
+      clientApp.use(logger('dev', logging));
+    }
+  }
 };
