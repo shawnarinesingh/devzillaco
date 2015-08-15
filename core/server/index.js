@@ -15,7 +15,7 @@ var express     = require('express'),
     errors      = require('./errors'),
     helpers     = require('./helpers'),
     mailer      = require('./mail'),
-    // middleware  = require('./middleware'),
+    middleware  = require('./middleware'),
     migrations  = require('./data/migration'),
     models      = require('./models'),
     permissions = require('./permissions'),
@@ -109,7 +109,7 @@ function init(options) {
     }
     
     // Handles express server and routing
-    // middleware(app);
+    middleware(app);
     
     return new appServer(app);
   });

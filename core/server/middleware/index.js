@@ -12,7 +12,7 @@ var api            = require('../api'),
     logger         = require('morgan'),
     middleware     = require('./middleware'),
     path           = require('path'),
-    // routes         = require('../routes'),
+    routes         = require('../routes'),
     slashes        = require('connect-slashes'),
     // storage        = require('../storage'),
     _              = require('lodash'),
@@ -25,29 +25,42 @@ var api            = require('../api'),
     // decideIsAdmin  = require('./decide-is-admin'),
     uncapitalise   = require('./uncapitalise'),
 
-    clientApp,
+    app,
     setupMiddleware;
 
 
-setupMiddleware = function setupMiddleware(clientAppInstance, apiApp) {
+setupMiddleware = function setupMiddleware(appInstance) {
   var logging = config.logging,
       corePath = config.paths.corePath,
       oauthServer = oauth2orize.createServer();
   
   // Cache express server instance
-  clientApp = clientAppInstance;
-  middleware.cacheApp(clientAppInstance);
+  app = appInstance;
+  middleware.cacheApp(appInstance);
   
   // Make sure 'req.secure' is valid for proxied requests
   // (X-Forwarded-Proto header will be checked, if present)
-  clientApp.enable('trust proxy');
+  app.enable('trust proxy');
   
   // Logging configuration
   if (logging !== false) {
-    if (clientApp.get('env') !== 'development') {
-      clientApp.use(logger('combined', logging));
+    if (app.get('env') !== 'development') {
+      app.use(logger('combined', logging));
     } else {
-      clientApp.use(logger('dev', logging));
+      app.use(logger('dev', logging));
     }
   }
+  
+  // ### Routing
+  // Set up API Routes
+  app.use(routes.apiBaseUri, routes.api(middleware));
+  
+  // ### Error handling
+  // 404 Handler
+  app.use(errors.error404);
+  
+  // 500 Handler
+  app.use(errors.error500);
 };
+
+module.exports = setupMiddleware;
