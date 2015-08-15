@@ -11,7 +11,6 @@ var _            = require('lodash'),
     docName      = 'settings',
     settings,
 
-    updateConfigTheme,
     updateSettingsCache,
     settingsFilter,
     filterPaths,
@@ -123,13 +122,16 @@ filterPaths = function (paths, active) {
  * @returns {Settings}
  */
 readSettingsResult = function (settingsModels) {
-  return _.reduce(settingsModels, function (memo, member) {
-    if (!memo.hasOwnProperty(member.attributes.key)) {
-      memo[member.attributes.key] = member.attributes;
-    }
-    
-    return memo;
-  }, {});
+  var settings = _.reduce(settingsModels, function (memo, member) {
+        if (!memo.hasOwnProperty(member.attributes.key)) {
+          memo[member.attributes.key] = member.attributes;
+        }
+        
+        return memo;
+      }, {}),
+      res;
+  
+  return settings;
 };
 
 
@@ -165,7 +167,21 @@ settingsResult = function (settings, type) {
 populateDefaultSetting = function (key) {
   // Call populateDefault and update the settings cache
   return dataProvider.Settings.populateDefault(key).then(function (defaultSetting) {
+    // Process the default result and add the settings cache
+    var readResult = readSettingsResult([defaultSetting]);
     
+    // Add to the settings cache
+    return updateSettingsCache(readResult).then(function () {
+      // Get the result from the cache with permission checks
+    });
+  }).catch(function (err) {
+    // Pass along NotFoundError
+    if (typeof err === errors.NotFoundError) {
+      return Promise.reject(err);
+    }
+    
+    // @todo: Different kind of error?
+    return Promise.reject(new errors.NotFoundError('Problem finding setting: ' + key));
   });
 };
 

@@ -31,11 +31,25 @@ logInfo = function logInfo(message) {
 };
 
 populateDefaultSettings = function populateDefaultSettings() {
-  
+  // Initialise the default settings
+  logInfo('Populating default settings');
+  return models.Settings.populateDefault('databaseVersion').then(function () {
+    logInfo('Complete');
+  });
 };
 
 backupDatabase = function backupDatabase() {
   logInfo('Creating database backup');
+  return dataExport().then(function (exportedData) {
+    // Save the exported data to the file system for download
+    return dataExport.fileName().then(function (fileName) {
+      fileName = path.resolve(config.paths.contentPath + '/data/' + fileName);
+      
+      return Promise.promisify(fs.writeFile)(fileName, JSON.stringify(exportedData)).then(function () {
+        logInfo('Database backup written to: ' + fileName);
+      });
+    });
+  });
 };
 
 // Check for whether data is needed to be bootstrapped or not
@@ -107,7 +121,7 @@ migrateUpFreshDb = function (tablesOnly) {
         return function () {
           logInfo('Creating table: ' + table);
           return utils.createTable(table);
-        }
+        };
       });
   logInfo('Creating tables...');
   tableSequence = sequence(tables);

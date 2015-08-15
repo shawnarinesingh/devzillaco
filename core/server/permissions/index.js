@@ -20,7 +20,7 @@ function hasActionsMap() {
   });
 }
 
-// TODO: Move this to its own file so others can use it?
+// @todo: Move this to its own file so others can use it?
 function parseContext(context) {
   // Parse what's passed to canThis.beginCheck for standard user and app scopes
   var parsed = {
@@ -52,7 +52,7 @@ CanThisResult.prototype.buildObjectTypeHandlers = function (objTypes, actType, c
       setting:    Models.Settings
   };
 
-  // Iterate through the object types, i.e. ['post', 'tag', 'user']
+  // Iterate through the object types, i.e. ['user']
   return _.reduce(objTypes, function (objTypeHandlers, objType) {
     // Grab the TargetModel through the objectTypeModelMap
     var TargetModel = objectTypeModelMap[objType];
@@ -98,7 +98,7 @@ CanThisResult.prototype.buildObjectTypeHandlers = function (objTypes, actType, c
               }
 
               // Otherwise, check if the id's match
-              // TODO: String vs Int comparison possibility here?
+              // @todo: String vs Int comparison possibility here?
               return modelId === permObjId;
             };
         // Check user permissions for matching action, object and id.

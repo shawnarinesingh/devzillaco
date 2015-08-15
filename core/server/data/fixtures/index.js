@@ -67,12 +67,17 @@ createOwner = function () {
 populate = function () {
   var ops = [],
       relations = [],
-      Role = models.Role;
+      Role = models.Role,
+      Client = models.Client;
   
   logInfo('Populating fixtures');
   
   _.each(fixtures.roles, function (role) {
     ops.push(Role.add(role, options));
+  });
+  
+  _.each(fixtures.clients, function (client) {
+    ops.push(Client.add(client, options));
   });
   
   return Promise.all(ops).then(function () {

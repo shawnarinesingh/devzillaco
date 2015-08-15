@@ -97,7 +97,7 @@ User = appBookshelf.Model.extend({
     if (opts && _.has(opts, 'validate') && opts.validate === false) {
       return;
     }
-    return validation.validationSchema(this.tableName, this.toJSON());
+    return validation.validateSchema(this.tableName, this.toJSON());
   },
   
   // Get the user from the options object

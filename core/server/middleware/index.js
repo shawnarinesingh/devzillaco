@@ -25,7 +25,7 @@ var api            = require('../api'),
     decideIsAdmin  = require('./decide-is-admin'),
     uncapitalise   = require('./uncapitalise'),
 
-    blogApp,
+    clientApp,
     setupMiddleware;
 
 
