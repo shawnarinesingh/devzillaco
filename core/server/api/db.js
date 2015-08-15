@@ -3,7 +3,6 @@
 var _                = require('lodash'),
     Promise          = require('bluebird'),
     dataExport       = require('../data/export'),
-    importer         = require('../data/importer'),
     models           = require('../models'),
     errors           = require('../errors'),
     canThis          = require('../permissions').canThis,

@@ -41,8 +41,6 @@ apiRoutes = function apiRoutes(middleware) {
 
   // ## DB
   router.get('/db', api.http(api.db.exportContent));
-  router.post('/db', middleware.busboy, api.http(api.db.importContent));
-  router.del('/db', api.http(api.db.deleteAllContent));
 
   // ## Mail
   router.post('/mail', api.http(api.mail.send));
