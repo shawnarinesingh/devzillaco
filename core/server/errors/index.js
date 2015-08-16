@@ -36,9 +36,9 @@ function getConfigModule() {
  * Basic error handling helpers
  */
 errors = {
-    updateActiveTheme: function (activeTheme) {
-        userErrorTemplateExists = getConfigModule().paths.availableThemes[activeTheme].hasOwnProperty('error.hbs');
-    },
+    // updateActiveTheme: function (activeTheme) {
+    //     userErrorTemplateExists = getConfigModule().paths.availableThemes[activeTheme].hasOwnProperty('error.hbs');
+    // },
 
     throwError: function (err) {
         if (!err) {
@@ -113,12 +113,12 @@ errors = {
         }
 
         // Overwrite error to provide information that this is probably a permission problem
-        // TODO: https://github.com/TryGhost/Ghost/issues/3687
+        // @todo: https://github.com/TryGhost/Ghost/issues/3687
         if (err.indexOf('SQLITE_READONLY') !== -1) {
             context = 'Your database is in read only mode. Visitors can read your blog, but you can\'t log in or add posts.';
             help = 'Check your database file and make sure that file owner and permissions are correct.';
         }
-        // TODO: Logging framework hookup
+        // @todo: Logging framework hookup
         // Eventually we'll have better logging which will know about envs
         if ((process.env.NODE_ENV === 'development' ||
             process.env.NODE_ENV === 'staging' ||

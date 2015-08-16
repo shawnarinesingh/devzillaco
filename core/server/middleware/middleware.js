@@ -16,11 +16,11 @@ var _           = require('lodash'),
     url         = require('url'),
     utils       = require('../utils'),
 
-    // busboy       = require('./ghost-busboy'),
-    // cacheControl = require('./cache-control'),
-    // spamPrevention   = require('./spam-prevention'),
-    // clientAuth       = require('./client-auth'),
-    // apiErrorHandlers = require('./api-error-handlers'),
+    busboy       = require('./app-busboy'),
+    cacheControl = require('./cache-control'),
+    spamPrevention   = require('./spam-prevention'),
+    clientAuth       = require('./client-auth'),
+    apiErrorHandlers = require('./api-error-handlers'),
 
     middleware,
     app;
@@ -102,13 +102,95 @@ middleware = {
   authenticate: function authenticate(req, res, next) {
     var path,
         subPath;
-        
     
-  }
-}
+    // SubPath is the url path starting after any default subdirectories
+    // it is stripped of anything after the two levels as the reset link has an argument
+    path = req.path;
+    /*jslint regexp:true, unparam:true*/
+    subPath = path.replace(/^(\/.*?\/.*?\/)(.*)?/, function replace(match, a) {
+      return a;
+    });
+    
+    if (subPath.indexOf('/api/') === 0
+        && (path.indexOf('/api/v0.1/authentication/') !== 0
+        || (path.indexOf('/api/v0.1/authentication/setup/') === 0 && req.method === 'PUT'))) {
+        return passport.authenticate('bearer', {session: false, failWithError: true},
+          function authenticate(err, user, info) {
+            if (err) {
+              return next(err); // will generate a 500 error
+            }
+            // Generate a JSON response reflecting authentication status
+            if (!user) {
+              var error = {
+                code: 401,
+                errorType: 'NoPermissionError',
+                message: 'Please Sign In'
+              };
+
+              return apiErrorHandlers.errorHandler(error, req, res, next);
+            }
+            // @todo: figure out, why user & authInfo is lost
+            req.authInfo = info;
+            req.user = user;
+            return next(null, user, info);
+          }
+        )(req, res, next);
+    }
+    next();
+  },
+  
+  // ### whenEnabled Middleware
+  // Selectively use middleware
+  // From https://github.com/senchalabs/connect/issues/676#issuecomment-9569658
+  whenEnabled: function whenEnabled(setting, fn) {
+    return function settingEnabled(req, res, next) {
+      // Set from server/middleware/index.js for now
+      if (app.enabled(setting)) {
+        fn(req, res, next);
+      } else {
+        next();
+      }
+    };
+  },
+  
+  // Check to see if we should use SSL
+  // and redirect if needed
+  checkSSL: function checkSSL(req, res, next) {
+    if (isSSLrequired(res.isAdmin, config.url, config.forceAdminSSL)) {
+      if (!req.secure) {
+        var response = sslForbiddenOrRedirect({
+                forceAdminSSL: config.forceAdminSSL,
+                configUrlSSL: config.urlSSL,
+                configUrl: config.url,
+                reqUrl: req.url
+            });
+
+        if (response.isForbidden) {
+          return res.sendStatus(403);
+        } else {
+          return res.redirect(301, response.redirectUrl(req.query));
+        }
+      }
+    }
+    next();
+  },
+  
+  busboy: busboy,
+  cacheControl: cacheControl,
+  spamPrevention: spamPrevention
+};
 
 module.exports = middleware;
 module.exports.cacheApp = cacheApp;
+
+module.exports.api = {
+  addClientSecret: clientAuth.addClientSecret,
+  cacheOauthServer: clientAuth.cacheOauthServer,
+  authenticateClient: clientAuth.authenticateClient,
+  generateAccessToken: clientAuth.generateAccessToken,
+  methodNotAllowed: apiErrorHandlers.methodNotAllowed,
+  errorHandler: apiErrorHandlers.errorHandler
+};
 
 // SSL helper functions are exported primarily for unit testing.
 module.exports.isSSLrequired = isSSLrequired;

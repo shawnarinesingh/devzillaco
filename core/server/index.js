@@ -3,6 +3,7 @@
 
 // Module dependencies
 var express     = require('express'),
+    hbs         = require('express-hbs'),
     compress    = require('compression'),
     fs          = require('fs'),
     uuid        = require('node-uuid'),
@@ -61,6 +62,31 @@ function initDbHashAndFirstRun() {
     
     return dbHash;
   });
+}
+
+// This is run after every initialization is done, right before starting server.
+// Its main purpose is to move adding notifications here, so none of the submodules
+// should need to include api, which previously resulted in circular dependencies.
+// This is also a "one central repository" of adding startup notifications in case
+// in the future apps will want to hook into here
+function initNotifications() {
+  if (mailer.state && mailer.state.usingDirect) {
+    api.notifications.add({notifications: [{
+      type: 'info',
+      message: [
+        'The app is attempting to use a direct method to send e-mail.',
+        'It is recommend that you explicitly configure an e-mail service.'
+      ].join(' ')
+    }]}, {context: {internal: true}});
+  }
+  if (mailer.state && mailer.state.emailDisabled) {
+    api.notifications.add({notifications: [{
+      type: 'worn',
+      message: [
+        'The app is currently unable to send e-mail.'
+      ].join(' ')
+    }]}, {context: {internal: true}});
+  }
 }
 
 // ## Intialize App
