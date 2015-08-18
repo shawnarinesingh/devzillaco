@@ -178,6 +178,9 @@ ConfigManager.prototype.set = function (config) {
       storage:          path.join(storagePath, activeStorage),
 
       contentPath:      contentPath,
+      clientPath:       path.join(appRoot, '/core/client/'),
+      buildPath:        path.join(appRoot, '/core/build/'),
+      serverPath:       path.join(appRoot, '/core/server/'),
       templatesPath:    path.resolve(contentPath, 'templates'),
       appPath:          path.resolve(contentPath, 'apps'),
       imagesPath:       path.resolve(contentPath, 'images'),

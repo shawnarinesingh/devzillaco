@@ -11,7 +11,7 @@ frontendRoutes = function frontendRoutes(middleware) {
       routeKeywords = config.routeKeywords,
       indexRouter = express.Router();
   
-  
-}
+  return router;
+};
 
 module.exports = frontendRoutes;

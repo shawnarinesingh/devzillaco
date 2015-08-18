@@ -8,6 +8,7 @@ var api            = require('../api'),
     crypto         = require('crypto'),
     errors         = require('../errors'),
     express        = require('express'),
+    jsxCompile     = require('express-jsx'),
     fs             = require('fs'),
     logger         = require('morgan'),
     middleware     = require('./middleware'),
@@ -64,9 +65,15 @@ setupMiddleware = function setupMiddleware(appInstance) {
   }));
   app.use(uncapitalise);
   
+  // Convert all jsx to readable javascript
+  app.use(jsxCompile(config.paths.clientPath));
+  
   // ### Routing
   // Set up API Routes
   app.use(routes.apiBaseUri, routes.api(middleware));
+  
+  // Set up Frontend routes
+  app.use(routes.frontend(middleware));
   
   // ### Error handling
   // 404 Handler
