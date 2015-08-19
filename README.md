@@ -1,4 +1,4 @@
-## DevZilla.co ## 
+## DevZilla.co ##
 
 This is the groundwork for the devzilla.co website.  
 
