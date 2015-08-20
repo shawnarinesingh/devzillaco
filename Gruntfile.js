@@ -19,24 +19,6 @@ var _              = require('lodash'),
     mochaPath      = path.resolve(cwd + '/node_modules/grunt-mocha-cli/node_modules/mocha/bin/mocha'),
     emberPath      = path.resolve(cwd + '/core/client/node_modules/.bin/ember'),
 
-
-    // ## Build File Patterns
-    // A list of files and patterns to include when creating a release zip.
-    // This is read from the `.npmignore` file and all patterns are inverted as the `.npmignore`
-    // file defines what to ignore, whereas we want to define what to include.
-    buildGlob = (function () {
-      /*jslint stupid:true */
-      return fs.readFileSync('.npmignore', {encoding: 'utf8'}).split('\n').map(function (pattern) {
-        if (pattern[0] === '!') {
-          return pattern.substr(1);
-        }
-        return '!' + pattern;
-      }).filter(function (pattern) {
-        // Remove empty patterns
-        return pattern !== '!';
-      });
-    }()),
-
     // ## Grunt configuration
 
     configureGrunt = function (grunt) {
@@ -306,29 +288,6 @@ var _              = require('lodash'),
         // ### grunt-shell
         // Command line tools where it's easier to run a command directly than configure a grunt plugin
         shell: {
-          ember: {
-            command: function (mode) {
-              switch (mode) {
-                case 'init':
-                  return 'echo Installing client dependencies... && npm install';
-
-                case 'prod':
-                  return emberPath + ' build --environment=production --silent';
-
-                case 'dev':
-                  return emberPath + ' build';
-
-                case 'test':
-                  return emberPath + ' test --silent';
-              }
-            },
-            options: {
-              execOptions: {
-                cwd: path.resolve(cwd + '/core/client/'),
-                stdout: false
-              }
-            }
-          },
           // #### Run bower install
           // Used as part of `grunt init`. See the section on [Building Assets](#building%20assets) for more
           // information.
@@ -408,18 +367,6 @@ var _              = require('lodash'),
             dest: 'core/built/public/',
             expand: true,
             nonull: true
-          },
-          release: {
-            files: [{
-              cwd: 'core/client/bower_components/jquery/dist/',
-              src: 'jquery.js',
-              dest: 'core/built/public/',
-              expand: true
-            }, {
-              expand: true,
-              src: buildGlob,
-              dest: '<%= paths.releaseBuild %>/'
-            }]
           }
         },
 

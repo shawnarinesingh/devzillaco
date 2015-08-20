@@ -84,3 +84,5 @@ setupMiddleware = function setupMiddleware(appInstance) {
 };
 
 module.exports = setupMiddleware;
+// Export middleware functions directly
+module.exports.middleware = middleware;

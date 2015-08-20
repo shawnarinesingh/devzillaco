@@ -11,6 +11,7 @@ The application is heavily influenced by Ghost, and is initially used as a learn
 To start the server:
 
 ```
+npm install 
 npm start
 ```
 

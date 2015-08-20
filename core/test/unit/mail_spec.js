@@ -74,7 +74,7 @@ describe('Mail', function () {
         from: '"Name" <static@example.com>'
       }
     });
-    mailer.from().should.equal('"Title" <static@example.com>');
+    mailer.from().should.equal('"Name" <static@example.com>');
   });
   
   it('should fall back to [title] <devzilla@[url]> as from address', function () {

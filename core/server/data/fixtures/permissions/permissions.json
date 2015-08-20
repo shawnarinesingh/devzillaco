@@ -82,6 +82,14 @@
     ]
   },
   "permissions_roles": {
+    "Owner": {
+      "db": "all",
+      "mail": "all",
+      "notification": "all",
+      "setting": "all",
+      "user": "all",
+      "role": "all"
+    },
     "Administrator": {
       "db": "all",
       "mail": "all",

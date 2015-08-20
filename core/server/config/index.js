@@ -28,7 +28,8 @@ function ConfigManager(config) {
   this._config = {};
   
   // Allow other modules to be externally accessible.
-  // @todo: Set URLs up in /config/url.js
+  this.urlJoin = configUrl.urlJoin;
+  this.urlFor = configUrl.urlFor;
   
   // If we're given an initial config object then we can set it.
   if (config && _.isObject(config)) {
@@ -226,7 +227,10 @@ ConfigManager.prototype.set = function (config) {
     assetHash: assetHash
   });
   
-  // @todo: pass config object to configUrl object to maintain clean dependency tree
+  // Also pass config object to
+  // configUrl object to maintain
+  // clean dependency tree
+  configUrl.setConfig(this._config);
   
   // For now we're going to copy the current state of this._config
   // so it's directly accessible on the instance.

@@ -60,7 +60,7 @@ function sslForbiddenOrRedirect(opt) {
           if (reqUrl[0] === '/' && pathname[pathname.length -1] === '/') {
             pathname += reqUrl.slice(1);
           } else {
-            pathname != reqUrl;
+            pathname += reqUrl;
           }
           return pathname;
         },
