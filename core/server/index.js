@@ -129,6 +129,9 @@ function init(options) {
   }).then(function () {
     var appHbs = hbs.create();
     
+    // Initialize Internationalization
+    i18n.init();
+    
     // Output necessary notifications on init
     initNotifications();
     
