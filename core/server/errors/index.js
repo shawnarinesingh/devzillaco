@@ -194,7 +194,7 @@ errors = {
         _.each(error, function each(errorItem) {
             var errorContent = {};
 
-            // TODO: add logic to set the correct status code
+            // @todo: add logic to set the correct status code
             statusCode = errorItem.code || 500;
 
             errorContent.message = _.isString(errorItem) ? errorItem :
@@ -275,7 +275,7 @@ errors = {
                 stack = parseStack(err.stack);
             }
 
-            res.status(code).render((errorView || 'error'), {
+            res.status(code).render((errorView || 'user-error'), {
                 message: err.message || err,
                 code: code,
                 stack: stack
@@ -308,7 +308,7 @@ errors = {
         }
 
         // We're not admin and the template doesn't exist. Render the default.
-        return renderErrorInt(defaultErrorTemplatePath);
+        return renderErrorInt();
     },
 
     error404: function (req, res, next) {

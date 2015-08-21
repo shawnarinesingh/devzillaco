@@ -56,6 +56,7 @@ setupMiddleware = function setupMiddleware(appInstance) {
   
   // Force SSL
   app.use(middleware.checkSSL);
+  app.set('views', config.paths.adminViews);
   
   // Add in all trailing slashes
   app.use(slashes(true, {
@@ -65,8 +66,6 @@ setupMiddleware = function setupMiddleware(appInstance) {
   }));
   app.use(uncapitalise);
   
-  // Convert all jsx to readable javascript
-  app.use(jsxCompile(config.paths.clientPath));
   
   // ### Routing
   // Set up API Routes

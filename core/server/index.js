@@ -3,14 +3,13 @@
 
 // Module dependencies
 var express     = require('express'),
-    hbs         = require('express-hbs'),
     compress    = require('compression'),
     fs          = require('fs'),
     uuid        = require('node-uuid'),
     _           = require('lodash'),
     Promise     = require('bluebird'),
     i18n        = require('./i18n'),
-
+    hbs         = require('express-hbs'),
     api         = require('./api'),
     config      = require('./config'),
     errors      = require('./errors'),
@@ -128,11 +127,20 @@ function init(options) {
       mailer.init()
     );
   }).then(function () {
+    var appHbs = hbs.create();
+    
+    // Output necessary notifications on init
+    initNotifications();
     
     // enabled gzip compression by default
     if (config.server.compress !== false) {
       app.use(compress());
     }
+    
+    // ## View engine
+    // set the view engine
+    app.set('view engine', 'hbs');
+    app.engine('hbs', appHbs.express3({}));
     
     // Handles express server and routing
     middleware(app);

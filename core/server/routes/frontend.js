@@ -11,6 +11,7 @@ frontendRoutes = function frontendRoutes(middleware) {
       routeKeywords = config.routeKeywords,
       indexRouter = express.Router();
   
+  // Index
   return router;
 };
 

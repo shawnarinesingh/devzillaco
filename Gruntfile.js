@@ -56,7 +56,7 @@ var _              = require('lodash'),
             }
           },
           express: {
-            files:  ['core/ghost-server.js', 'core/server/**/*.js'],
+            files:  ['core/app-server.js', 'core/server/**/*.js'],
             tasks:  ['express:dev'],
             options: {
               spawn: false
@@ -72,11 +72,11 @@ var _              = require('lodash'),
         },
 
         // ### grunt-express-server
-        // Start a Ghost expess server for use in development and testing
+        // Start an expess server for use in development and testing
         express: {
           options: {
             script: 'index.js',
-            output: 'Ghost is running'
+            output: 'App is running'
           },
 
           dev: {
@@ -875,13 +875,6 @@ var _              = require('lodash'),
       grunt.registerTask('default', 'Build JS & templates for development',
         ['shell:ember:dev']);
 
-      // ### Production assets
-      // `grunt prod` - will build the minified assets used in production.
-      //
-      // It is otherwise the same as running `grunt`, but is only used when running Ghost in the `production` env.
-      grunt.registerTask('prod', 'Build JS & templates for production',
-        ['shell:ember:prod', 'uglify:prod', 'master-warn']);
-
       // ### Live reload
       // `grunt dev` - build assets on the fly whilst developing
       //
@@ -896,18 +889,6 @@ var _              = require('lodash'),
       grunt.registerTask('dev', 'Dev Mode; watch files and restart server on changes',
        ['bgShell:ember', 'express:dev', 'watch']);
 
-      // ### Release
-      // Run `grunt release` to create a Ghost release zip file.
-      // Uses the files specified by `.npmignore` to know what should and should not be included.
-      // Runs the asset generation tasks for both development and production so that the release can be used in
-      // either environment, and packages all the files up into a zip.
-      grunt.registerTask('release',
-        'Release task - creates a final built zip\n' +
-        ' - Do our standard build steps \n' +
-        ' - Copy files to release-folder/#/#{version} directory\n' +
-        ' - Clean out unnecessary files (travis, .git*, etc)\n' +
-        ' - Zip files in release-folder to dist-folder/#{version} directory',
-        ['init', 'shell:ember:prod', 'uglify:release', 'clean:release',  'shell:shrinkwrap', 'copy:release', 'compress:release']);
     };
 
 module.exports = configureGrunt;
