@@ -1,9 +1,10 @@
 var React = require('react'),
-    {Route, DefaultRoute} = require('react-router'),
-    App = require('./components/App.react');
+    Route = require('react-router').Route,
+    DefaultRoute = require('react-router').DefaultRoute,
+    App = require('./components/App');
 
 var routes = (
-  <Route name="app" path="/" handler={App}>
+  <Route name="app" path="/admin" handler={App}>
     <DefaultRoute handler={App} />
   </Route>
 );

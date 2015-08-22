@@ -8,14 +8,13 @@ var api            = require('../api'),
     crypto         = require('crypto'),
     errors         = require('../errors'),
     express        = require('express'),
-    jsxCompile     = require('express-jsx'),
     fs             = require('fs'),
     logger         = require('morgan'),
     middleware     = require('./middleware'),
     path           = require('path'),
     routes         = require('../routes'),
     slashes        = require('connect-slashes'),
-    // storage        = require('../storage'),
+    storage        = require('../storage'),
     _              = require('lodash'),
     passport       = require('passport'),
     oauth          = require('./oauth'),
@@ -29,11 +28,27 @@ var api            = require('../api'),
     app,
     setupMiddleware;
 
+// Redirect to setup if no user exists
+function redirectToSetup(req, res, next) {
+    /*jslint unparam:true*/
 
-setupMiddleware = function setupMiddleware(appInstance) {
+    api.authentication.isSetup().then(function then(exists) {
+        if (!exists.setup[0].status && !req.path.match(/\/setup\//)) {
+            return res.redirect(config.paths.subdir + '/admin/setup/');
+        }
+        next();
+    }).catch(function handleError(err) {
+        return next(new Error(err));
+    });
+}
+
+setupMiddleware = function setupMiddleware(appInstance, adminApp) {
   var logging = config.logging,
       corePath = config.paths.corePath,
       oauthServer = oauth2orize.createServer();
+  
+  // silence JSHint without disabling unused check for the whole file
+  // authStrategies = authStrategies
   
   // Cache express server instance
   app = appInstance;
@@ -54,9 +69,16 @@ setupMiddleware = function setupMiddleware(appInstance) {
     }
   }
   
+  // Static assets
+  app.use('/content/images', storage.getStorage().serve());
+  app.use('/public', express['static'](path.join(corePath, '/build'), {maxAge: utils.ONE_YEAR_MS}));
+  
+  // Admin only config
+  app.use('/admin', express['static'](config.paths.clientAssets, {maxAge: utils.ONE_YEAR_MS}));
+  
   // Force SSL
   app.use(middleware.checkSSL);
-  app.set('views', config.paths.adminViews);
+  adminApp.set('views', config.paths.adminViews);
   
   // Add in all trailing slashes
   app.use(slashes(true, {
@@ -66,12 +88,31 @@ setupMiddleware = function setupMiddleware(appInstance) {
   }));
   app.use(uncapitalise);
   
+  // Body parsing
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({extended: true}));
+  
+  // ### Caching
+  // Frontend is cacheable
+  app.use(middleware.cacheControl('public'));
+  // Admin shouldn't be cached
+  adminApp.use(middleware.cacheControl('private'));
+  // API shouldn't be cached
+  app.use(routes.apiBaseUri, middleware.cacheControl('private'));
   
   // ### Routing
   // Set up API Routes
   app.use(routes.apiBaseUri, routes.api(middleware));
   
   // Set up Frontend routes
+  app.use(routes.frontend(middleware));
+  
+  // Mount admin express app to /admin and set up routes
+  // adminApp.use(middleware.redirectToSetup);
+  adminApp.use(routes.admin());
+  app.use('/admin', adminApp);
+  
+  // Set up frontend routes
   app.use(routes.frontend(middleware));
   
   // ### Error handling
@@ -85,3 +126,5 @@ setupMiddleware = function setupMiddleware(appInstance) {
 module.exports = setupMiddleware;
 // Export middleware functions directly
 module.exports.middleware = middleware;
+// Expose middleware functions in this file as well
+module.exports.middleware.redirectToSetup = redirectToSetup;

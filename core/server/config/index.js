@@ -187,14 +187,14 @@ ConfigManager.prototype.set = function (config) {
       imagesPath:       path.resolve(contentPath, 'images'),
       imagesRelPath:    'content/images',
 
-      adminViews:       path.join(corePath, '/server/views/'),
+      adminViews:       path.join(corePath, '/server/views/admin/'),
       helperTemplates:  path.join(corePath, '/server/helpers/tpl/'),
       exportPath:       path.join(corePath, '/server/data/export/'),
       lang:             path.join(corePath, '/shared/lang/'),
 
       availableTemplates:  this._config.paths.availableTemplates || {},
       availableApps:    this._config.paths.availableApps || {},
-      clientAssets:     path.join(corePath, '/built/assets/')
+      clientAssets:     path.join(corePath, '/build/assets/')
     },
     storage: {
       active: activeStorage

@@ -236,7 +236,7 @@ errors = {
     renderErrorPage: function (code, err, req, res, next) {
         /*jshint unused:false*/
         var self = this,
-            defaultErrorTemplatePath = path.resolve(getConfigModule().paths.adminViews, 'user-error.hbs');
+            defaultErrorTemplatePath = path.resolve(getConfigModule().paths.adminViews, 'error.hbs');
 
         function parseStack(stack) {
             if (!_.isString(stack)) {
@@ -275,7 +275,7 @@ errors = {
                 stack = parseStack(err.stack);
             }
 
-            res.status(code).render((errorView || 'user-error'), {
+            res.status(code).render((errorView || 'error'), {
                 message: err.message || err,
                 code: code,
                 stack: stack
@@ -299,13 +299,13 @@ errors = {
         }
 
         if (code >= 500) {
-            this.logError(err, 'Rendering Error Page', 'Ghost caught a processing error in the middleware layer.');
+            this.logError(err, 'Rendering Error Page', 'App caught a processing error in the middleware layer.');
         }
 
         // Are we admin? If so, don't worry about the user template
-        if ((res.isAdmin && req.user && req.user.id) || userErrorTemplateExists === true) {
-            return renderErrorInt();
-        }
+        // if ((res.isAdmin && req.user && req.user.id) || userErrorTemplateExists === true) {
+        //     return renderErrorInt();
+        // }
 
         // We're not admin and the template doesn't exist. Render the default.
         return renderErrorInt();

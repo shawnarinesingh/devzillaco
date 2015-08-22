@@ -93,7 +93,8 @@ function initNotifications() {
 // Finally it returns an instance of appServer
 function init(options) {
   // Get reference to an express app instance.
-  var app = express();
+  var app = express(),
+      adminApp = express();
   
   // ### Initialization 
   // The server and its dependencies require a populated config
@@ -127,13 +128,17 @@ function init(options) {
       mailer.init()
     );
   }).then(function () {
-    var appHbs = hbs.create();
+    var adminHbs = hbs.create();
     
     // Initialize Internationalization
     i18n.init();
     
     // Output necessary notifications on init
     initNotifications();
+    // ## Configuration
+    
+    // return the correct mime type for woff files
+    express['static'].mime.define({'application/font-woff': ['woff']});
     
     // enabled gzip compression by default
     if (config.server.compress !== false) {
@@ -143,10 +148,16 @@ function init(options) {
     // ## View engine
     // set the view engine
     app.set('view engine', 'hbs');
-    app.engine('hbs', appHbs.express3({}));
+    
+    // Load helpers
+    helpers.loadCoreHelpers(adminHbs);
+    
+    // Create a handlebars instance for admin and init view engine
+    adminApp.set('view engine', 'hbs');
+    adminApp.engine('hbs', adminHbs.express4({}));
     
     // Handles express server and routing
-    middleware(app);
+    middleware(app, adminApp);
     
     return new appServer(app);
   });
