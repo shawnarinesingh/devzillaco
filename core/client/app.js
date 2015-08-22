@@ -1,5 +1,12 @@
-var routerRenderer = require('./utils/routerRenderer'),
-    alt = require('./alt'),
-    routes = require('./routes');
+var React = require('react'),
+    App = require('./components/App');
 
-module.exports = routerRenderer(alt, routes);
+function run() {
+  var app = React.render(<App />, document.getElementById('app'));
+  
+  return app;
+}
+
+run();
+
+module.exports = run();
