@@ -8,8 +8,6 @@ function run() {
   return app;
 }
 
-run();
-
 module.exports = run();
 
 },{"./components/App":2,"react":158}],2:[function(require,module,exports){

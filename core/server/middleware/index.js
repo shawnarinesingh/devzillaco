@@ -78,7 +78,8 @@ setupMiddleware = function setupMiddleware(appInstance, adminApp) {
   
   // Force SSL
   app.use(middleware.checkSSL);
-  adminApp.set('views', config.paths.adminViews);
+  
+  app.set('views', config.paths.templateViews);
   
   // Add in all trailing slashes
   app.use(slashes(true, {
@@ -95,8 +96,6 @@ setupMiddleware = function setupMiddleware(appInstance, adminApp) {
   // ### Caching
   // Frontend is cacheable
   app.use(middleware.cacheControl('public'));
-  // Admin shouldn't be cached
-  adminApp.use(middleware.cacheControl('private'));
   // API shouldn't be cached
   app.use(routes.apiBaseUri, middleware.cacheControl('private'));
   
@@ -106,15 +105,7 @@ setupMiddleware = function setupMiddleware(appInstance, adminApp) {
   
   // Set up Frontend routes
   app.use(routes.frontend(middleware));
-  
-  // Mount admin express app to /admin and set up routes
-  // adminApp.use(middleware.redirectToSetup);
-  adminApp.use(routes.admin());
-  app.use('/admin', adminApp);
-  
-  // Set up frontend routes
-  app.use(routes.frontend(middleware));
-  
+
   // ### Error handling
   // 404 Handler
   app.use(errors.error404);

@@ -128,6 +128,7 @@ function init(options) {
       mailer.init()
     );
   }).then(function () {
+    var appHbs = hbs.create();
     var adminHbs = hbs.create();
     
     // Initialize Internationalization
@@ -148,9 +149,7 @@ function init(options) {
     // ## View engine
     // set the view engine
     app.set('view engine', 'hbs');
-    
-    // Load helpers
-    helpers.loadCoreHelpers(adminHbs);
+    app.engine('hbs', appHbs.express4({}));
     
     // Create a handlebars instance for admin and init view engine
     adminApp.set('view engine', 'hbs');

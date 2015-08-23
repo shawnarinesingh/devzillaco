@@ -7,6 +7,4 @@ function run() {
   return app;
 }
 
-run();
-
 module.exports = run();

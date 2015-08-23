@@ -16,23 +16,21 @@ var _           = require('lodash'),
 
     frontendControllers;
 
-function renderChannel(channelOpts) {
-  channelOpts = channelOpts || {};
-  
-  return function renderChannel(req, res, next) {
-    var pageParam = req.params.page !== undefined ? parseInt(req.params.page, 10) : 1,
-        options = {
-          page: pageParam
-        },
-        hasSlug,
-        filter,
-        filterKey;
-  }
-}
 frontendControllers = {
-  homepage: renderChannel({
-    name: 'home',
-    route: '/',
-    firstPageTemplate: 'home'
-  })
+  // Route: index
+  // Path: /
+  // Method: GET
+  index: function index(req, res) {
+    /*jslint unparam:true*/
+    
+    function renderIndex() {
+      return api.configuration.browse().then(function then(data) {
+        res.render('index', {});
+      });
+    }
+    
+    renderIndex();
+  }
 };
+
+module.exports = frontendControllers;

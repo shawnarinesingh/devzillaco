@@ -173,7 +173,7 @@ appServer.prototype.logStartMessages = function () {
   }
 
   function shutdown() {
-    console.log(chalk.red('\nGhost has shut down'));
+    console.log(chalk.red('\nApp has shut down'));
     if (process.env.NODE_ENV === 'production') {
       console.log(
         '\nYour blog is now offline'
@@ -187,7 +187,7 @@ appServer.prototype.logStartMessages = function () {
     }
     process.exit(0);
   }
-  // ensure that Ghost exits correctly on Ctrl+C and SIGTERM
+  // ensure that App exits correctly on Ctrl+C and SIGTERM
   process.
     removeAllListeners('SIGINT').on('SIGINT', shutdown).
     removeAllListeners('SIGTERM').on('SIGTERM', shutdown);

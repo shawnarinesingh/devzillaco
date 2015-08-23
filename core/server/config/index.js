@@ -187,7 +187,7 @@ ConfigManager.prototype.set = function (config) {
       imagesPath:       path.resolve(contentPath, 'images'),
       imagesRelPath:    'content/images',
 
-      adminViews:       path.join(corePath, '/server/views/admin/'),
+      templateViews:    path.join(corePath, '/server/views/'),
       helperTemplates:  path.join(corePath, '/server/helpers/tpl/'),
       exportPath:       path.join(corePath, '/server/data/export/'),
       lang:             path.join(corePath, '/shared/lang/'),
