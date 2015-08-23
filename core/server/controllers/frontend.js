@@ -15,6 +15,7 @@ var _           = require('lodash'),
     routeMatch  = require('path-match')(),
 
     frontendControllers;
+    
 
 frontendControllers = {
   // Route: index
@@ -25,7 +26,9 @@ frontendControllers = {
     
     function renderIndex() {
       return api.configuration.browse().then(function then(data) {
-        res.render('index', {});
+        res.render('index', {
+          
+        });
       });
     }
     

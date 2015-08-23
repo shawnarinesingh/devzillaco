@@ -85,11 +85,7 @@ function configureDriver(client) {
   var pg;
   
   if (client === 'pg' || client === 'postgres' || client === 'postgresql') {
-    try {
-      pg = require('pg');
-    } catch (e) {
-      pg = require('pg.js');
-    }
+    pg = require('pg');
     
     // By default PostgreSQL returns data as strings along with an OID that identifies
     // its type.  We're setting the parser to convert OID 20 (int8) into a javascript

@@ -71,10 +71,10 @@ setupMiddleware = function setupMiddleware(appInstance) {
   
   // Static assets
   app.use('/content/images', storage.getStorage().serve());
-  app.use('/public', express['static'](path.join(corePath, '/build'), {maxAge: utils.ONE_YEAR_MS}));
+  app.use('/public', express['static'](path.join(corePath, '/build/public'), {maxAge: utils.ONE_YEAR_MS}));
   
   // Admin only config
-  app.use('/admin', express['static'](config.paths.clientAssets, {maxAge: utils.ONE_YEAR_MS}));
+  app.use('*', express['static'](config.paths.clientAssets, {maxAge: utils.ONE_YEAR_MS}));
   
   // Force SSL
   app.use(middleware.checkSSL);

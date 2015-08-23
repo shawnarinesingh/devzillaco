@@ -24,6 +24,7 @@ var AUTOPREFIXER_BROWSERS = [
 ];
 
 var DEST = config.paths.buildPath;
+var publicPath = DEST + '/public/';
 var clientPath = config.paths.clientPath;
 var serverPath = config.paths.serverPath;
 var src = {};
@@ -48,17 +49,18 @@ gulp.task('styles', function () {
     .pipe($.autoprefixer({browsers: AUTOPREFIXER_BROWSERS}))
     .pipe($.csscomb())
     .pipe($.minifyCss())
-    .pipe(gulp.dest(DEST + '/css'))
+    .pipe(gulp.dest(publicPath + '/css'))
     .pipe($.size({title: 'styles'}));
 });
 
-// Bundle
-gulp.task('bundle', function () {
+// Bundle Client
+gulp.task('bundle:client', function () {
   var b = browserify({
     entries: './core/client/app.js',
     debug: true,
     transform: [reactify]
-  })
+  });
+  
   return b.bundle()
     .pipe(source('app.js'))
     .pipe(buffer())
@@ -66,11 +68,30 @@ gulp.task('bundle', function () {
       .pipe($.concat('main.js'))
       .on('error', $.util.log)
     .pipe($.sourcemaps.write('./'))
+    .pipe(gulp.dest(publicPath))
+    .pipe($.size({title: 'client scripts'}));
+});
+
+// Bundle Server
+gulp.task('bundle:server', function () {
+  var b = browserify({
+    entries: './index.js',
+    debug: true,
+    transform: [reactify]
+  });
+  
+  return b.bundle()
+    .pipe(source('server.js'))
+    .pipe(buffer())
+    .pipe($.sourcemaps.init({loadMaps: true}))
+      .pipe($.concat('server.js'))
+      .on('error', $.util.log)
+    .pipe($.sourcemaps.write('./'))
     .pipe(gulp.dest(DEST))
-    .pipe($.size({title: 'scripts'}));
+    .pipe($.size({title: 'server scripts'}));
 });
 
 // Build
 gulp.task('build', ['clean'], function(cb) {
-  runSequence(['styles', 'bundle'], cb);
+  runSequence(['styles', 'bundle:client', 'bundle:server'], cb);
 });
