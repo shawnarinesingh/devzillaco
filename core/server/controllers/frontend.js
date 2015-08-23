@@ -13,9 +13,12 @@ var _           = require('lodash'),
     Promise     = require('bluebird'),
     // template    = require('../helpers/template'),
     routeMatch  = require('path-match')(),
-
-    frontendControllers;
+    React       = require('react'),
     
+    frontendControllers;
+
+var buildPath = config.paths.buildPath;
+var App = React.createFactory(require(buildPath + '/components/App'));
 
 frontendControllers = {
   // Route: index
@@ -23,11 +26,11 @@ frontendControllers = {
   // Method: GET
   index: function index(req, res) {
     /*jslint unparam:true*/
-    
+    var app = new App();
     function renderIndex() {
       return api.configuration.browse().then(function then(data) {
         res.render('index', {
-          
+          body: React.renderToString(app)
         });
       });
     }

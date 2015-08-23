@@ -1,9 +1,9 @@
 var React = require('react');
 
 var App = React.createClass({
-  render: function () {
+  render: function render() {
     return (
-      <div>Hello, World!</div>  
+      <div className="App">Hello, World!</div>  
     );
   }
 });

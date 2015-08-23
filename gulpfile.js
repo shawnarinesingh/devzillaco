@@ -74,19 +74,10 @@ gulp.task('bundle:client', function () {
 
 // Bundle Server
 gulp.task('bundle:server', function () {
-  var b = browserify({
-    entries: './index.js',
-    debug: true,
-    transform: [reactify]
-  });
-  
-  return b.bundle()
-    .pipe(source('server.js'))
-    .pipe(buffer())
-    .pipe($.sourcemaps.init({loadMaps: true}))
-      .pipe($.concat('server.js'))
-      .on('error', $.util.log)
-    .pipe($.sourcemaps.write('./'))
+  src.scripts = clientPath + '**/*.js';
+  return gulp.src(src.scripts)
+    .pipe($.plumber())
+    .pipe($.react())
     .pipe(gulp.dest(DEST))
     .pipe($.size({title: 'server scripts'}));
 });
