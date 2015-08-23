@@ -93,8 +93,7 @@ function initNotifications() {
 // Finally it returns an instance of appServer
 function init(options) {
   // Get reference to an express app instance.
-  var app = express(),
-      adminApp = express();
+  var app = express();
   
   // ### Initialization 
   // The server and its dependencies require a populated config
@@ -129,8 +128,7 @@ function init(options) {
     );
   }).then(function () {
     var appHbs = hbs.create();
-    var adminHbs = hbs.create();
-    
+
     // Initialize Internationalization
     i18n.init();
     
@@ -151,12 +149,8 @@ function init(options) {
     app.set('view engine', 'hbs');
     app.engine('hbs', appHbs.express4({}));
     
-    // Create a handlebars instance for admin and init view engine
-    adminApp.set('view engine', 'hbs');
-    adminApp.engine('hbs', adminHbs.express4({}));
-    
     // Handles express server and routing
-    middleware(app, adminApp);
+    middleware(app);
     
     return new appServer(app);
   });

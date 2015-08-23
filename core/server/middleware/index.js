@@ -42,7 +42,7 @@ function redirectToSetup(req, res, next) {
     });
 }
 
-setupMiddleware = function setupMiddleware(appInstance, adminApp) {
+setupMiddleware = function setupMiddleware(appInstance) {
   var logging = config.logging,
       corePath = config.paths.corePath,
       oauthServer = oauth2orize.createServer();
