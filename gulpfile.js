@@ -31,7 +31,7 @@ var src = {};
 var watch = false;
 
 // The default task
-gulp.task('default', ['build:watch']);
+gulp.task('default', ['serve']);
 
 // Clean up
 gulp.task('clean', del.bind(null, [DEST]));
@@ -67,11 +67,15 @@ gulp.task('build', ['clean'], function (cb) {
   runSequence(['styles'], ['bundle'], cb);
 });
 
-// Build Watch
-gulp.task('build:watch', function (cb) {
-  watch = true;
+gulp.task('serve', ['build'], function () {
+  $.nodemon({
+    script: 'index.js',
+    ext: 'js hbs',
+    env: { 'NODE_ENV': 'development' }
+  });
+  
   runSequence('build', function () {
     gulp.watch(src.styles, ['styles']);
     gulp.watch(src.scripts, ['bundle']);
-  });
+  })
 });
