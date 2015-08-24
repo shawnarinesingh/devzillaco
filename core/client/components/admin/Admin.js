@@ -5,6 +5,7 @@ var React = require('react'),
 
 var Admin = React.createClass({
   render: function render() {
+    var path = this.props.path;
     return (
       <div className="Admin">
         <Header />

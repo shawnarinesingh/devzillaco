@@ -68,6 +68,9 @@ apiRoutes = function apiRoutes(middleware) {
   // ## Uploads
   router.post('/uploads', middleware.busboy, api.http(api.uploads.add));
   
+  // API Router middleware
+  router.use(middleware.api.errorHandler);
+  
   return router;
 };
 

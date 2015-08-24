@@ -6,15 +6,16 @@ var React = require('react'),
     App = require('./components/App'),
     NotFound = require('./components/NotFound'),
     Admin = require('./components/admin/Admin'),
-    AdminLogin = require('./components/admin/Login');
+    Login = require('./components/admin/Login');
 
 var routes = (
   <Route name="home" path="/">
-    <Route name="admin" path="admin/" handler={Admin}>
-      <Route name="login" path="login/" handler={AdminLogin} />
-    </Route>
-    <NotFoundRoute handler={NotFound} />
     <DefaultRoute handler={App} />
+    
+    <Route name="admin" path="/admin/" handler={Admin} />
+    <Route name="login" path="/admin/login/" handler={Login} />
+    
+    <NotFoundRoute handler={NotFound} />
   </Route>
 );
 
