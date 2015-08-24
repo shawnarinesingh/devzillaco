@@ -1,9 +1,14 @@
-var React = require('react');
+var React = require('react'),
+
+    Header = require('./Header');
 
 var App = React.createClass({
   render: function render() {
     return (
-      <div className="App">Hello, World!</div>  
+      <div className="App">
+        <Header />
+        Hello, World!
+      </div>
     );
   }
 });
