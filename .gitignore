@@ -62,8 +62,8 @@ config.js
 /core/client/config.js
 !/core/client/app/services/config.js
 
-# Built asset files
-/core/build/
+# Built client files
+/build/
 
 # Coverage reports
 coverage.html

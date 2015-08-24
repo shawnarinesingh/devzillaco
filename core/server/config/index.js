@@ -180,7 +180,7 @@ ConfigManager.prototype.set = function (config) {
 
       contentPath:      contentPath,
       clientPath:       path.join(appRoot, '/core/client/'),
-      buildPath:        path.join(appRoot, '/core/build/'),
+      buildPath:        path.join(appRoot, '/build/'),
       serverPath:       path.join(appRoot, '/core/server/'),
       templatesPath:    path.resolve(contentPath, 'templates'),
       appPath:          path.resolve(contentPath, 'apps'),
