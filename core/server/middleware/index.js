@@ -70,6 +70,7 @@ setupMiddleware = function setupMiddleware(appInstance) {
   }
   
   // Static assets
+  app.use('/shared', express['static'](path.join(corePath, '/shared'), {maxAge: utils.ONE_HOUR_MS}));
   app.use('/content/images', storage.getStorage().serve());
   app.use('/public', express['static'](path.join(corePath, '/build/public'), {maxAge: utils.ONE_YEAR_MS}));
   

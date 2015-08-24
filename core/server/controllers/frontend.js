@@ -14,23 +14,28 @@ var _           = require('lodash'),
     // template    = require('../helpers/template'),
     routeMatch  = require('path-match')(),
     React       = require('react'),
+    Router      = require('react-router'),
     
     frontendControllers;
 
 var buildPath = config.paths.buildPath;
+var routes = require(config.paths.buildPath + 'routes');
 var App = React.createFactory(require(buildPath + '/components/App'));
 
 frontendControllers = {
   // Route: index
   // Path: /
   // Method: GET
-  index: function index(req, res) {
+  index: function index(req, res, next) {
     /*jslint unparam:true*/
-    var app = new App();
     function renderIndex() {
       return api.configuration.browse().then(function then(data) {
-        res.render('index', {
-          body: React.renderToString(app)
+        var router = Router.create({location: req.url, routes: routes});
+        router.run(function (Handler, state) {
+          var html = React.renderToString(React.createElement(Handler));
+          return res.render('index', {
+            body: html
+          });
         });
       });
     }
