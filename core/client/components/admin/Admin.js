@@ -1,4 +1,5 @@
 var React = require('react'),
+    Link = require('react-router').Link,
 
     Header = require('../Header');
 
@@ -7,7 +8,9 @@ var Admin = React.createClass({
     return (
       <div className="Admin">
         <Header />
-        Hello, Admin!
+        Hello, Admin!!
+        
+        <Link to="login">Login</Link>
       </div>
     );
   }

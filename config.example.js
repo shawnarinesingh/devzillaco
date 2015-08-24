@@ -11,15 +11,16 @@ config = {
   // When running the app in the wild, use the production environment.
   // Configure your URL and mail settings here
   production: {
-    url: '',
+    url: 'http://devzilla.co',
     mail: {},
     database: {
-      client: 'sqlite3',
+      client: 'pg',
       connection: {
-        connection: {
-          filename: path.join(__dirname, '/content/data/data.db')
-        },
-        debug: false
+        host     : '127.0.0.1',
+        user     : 'devzilla',
+        password : 'devzilla',
+        database : 'devzilla',
+        charset  : 'utf8'
       }
     },
       
@@ -51,11 +52,14 @@ config = {
     // #### Database
     // This app supports sqlite3 (default), MySQL & PostgreSQL
     database: {
-      client: 'sqlite3',
+      client: 'pg',
       connection: {
-        filename: path.join(__dirname, '/content/data/data-dev.db')
-      },
-      debug: false
+        host     : '127.0.0.1',
+        user     : 'devzilla',
+        password : 'devzilla',
+        database : 'devzilla',
+        charset  : 'utf8'
+      }
     },
     
     // #### Server
@@ -68,9 +72,9 @@ config = {
     },
     
     // #### Paths
-    // Specify where your content directory lives
+    // Specify where directories live
     paths: {
-      contentPath: path.join(__dirname, '/content/')
+      contentPath: path.join(__dirname, '/content/'),
     }
   },
   // **Developers only need to edit below here**

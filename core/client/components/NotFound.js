@@ -8,8 +8,7 @@ var App = React.createClass({
     return (
       <div className="App">
         <Header />
-        Hello, World!!!
-        <Link to="admin">Admin page</Link>
+        Page not found!!
       </div>
     );
   }

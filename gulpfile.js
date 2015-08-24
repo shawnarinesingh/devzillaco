@@ -31,7 +31,7 @@ var src = {};
 var watch = false;
 
 // The default task
-gulp.task('default', ['build']);
+gulp.task('default', ['build:watch']);
 
 // Clean up
 gulp.task('clean', del.bind(null, [DEST]));
@@ -53,27 +53,8 @@ gulp.task('styles', function () {
     .pipe($.size({title: 'styles'}));
 });
 
-// Bundle Client
-gulp.task('bundle:client', function () {
-  var b = browserify({
-    entries: './core/client/app.js',
-    debug: true,
-    transform: [reactify]
-  });
-  
-  return b.bundle()
-    .pipe(source('app.js'))
-    .pipe(buffer())
-    .pipe($.sourcemaps.init({loadMaps: true}))
-      .pipe($.concat('main.js'))
-      .on('error', $.util.log)
-    .pipe($.sourcemaps.write('./'))
-    .pipe(gulp.dest(publicPath))
-    .pipe($.size({title: 'client scripts'}));
-});
-
-// Bundle Server
-gulp.task('bundle:server', function () {
+// Bundle 
+gulp.task('bundle', function () {
   src.scripts = clientPath + '**/*.js';
   return gulp.src(src.scripts)
     .pipe($.plumber())
@@ -82,7 +63,15 @@ gulp.task('bundle:server', function () {
     .pipe($.size({title: 'server scripts'}));
 });
 
-// Build
-gulp.task('build', ['clean'], function(cb) {
-  runSequence(['styles', 'bundle:client', 'bundle:server'], cb);
+gulp.task('build', ['clean'], function (cb) {
+  runSequence(['styles'], ['bundle'], cb);
+});
+
+// Build Watch
+gulp.task('build:watch', function (cb) {
+  watch = true;
+  runSequence('build', function () {
+    gulp.watch(src.styles, ['styles']);
+    gulp.watch(src.scripts, ['bundle']);
+  });
 });
