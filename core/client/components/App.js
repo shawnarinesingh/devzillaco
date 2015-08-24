@@ -9,6 +9,7 @@ var App = React.createClass({
       <div className="App">
         <Header />
         Hello, World!
+        <hr />
         <Link to="admin">Admin page</Link>
       </div>
     );
